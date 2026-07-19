@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Info - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link active">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <h2 class="mb-4" style="color: var(--primary);">Model Architecture Configurations</h2>
+            <p class="text-muted mb-5">Technical representation of the Keras Convolutional Neural Network (CNN) configured inside this project console.</p>
+
+            <div class="row g-4">
+                <!-- Structure Table Card -->
+                <div class="col-lg-7">
+                    <div class="glass-card bg-white">
+                        <h4 class="mb-4" style="color: var(--primary);">Sequential Layer Parameters</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-light table-striped align-middle small text-muted border border-light">
+                                <thead>
+                                    <tr class="text-dark border-bottom" style="background-color: #f1f5f9;">
+                                        <th>Layer Type</th>
+                                        <th>Output Shape</th>
+                                        <th>Filter / Kernel</th>
+                                        <th>Activation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Conv2D (Input)</td>
+                                        <td>(None, 28, 28, 32)</td>
+                                        <td>32 Filters &times; (3x3)</td>
+                                        <td>ReLU</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">BatchNormalization</td>
+                                        <td>(None, 28, 28, 32)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">MaxPooling2D</td>
+                                        <td>(None, 14, 14, 32)</td>
+                                        <td>(2x2) pool</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Conv2D (Hidden)</td>
+                                        <td>(None, 14, 14, 64)</td>
+                                        <td>64 Filters &times; (3x3)</td>
+                                        <td>ReLU</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">BatchNormalization</td>
+                                        <td>(None, 14, 14, 64)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">MaxPooling2D</td>
+                                        <td>(None, 7, 7, 64)</td>
+                                        <td>(2x2) pool</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Conv2D (Deep)</td>
+                                        <td>(None, 7, 7, 128)</td>
+                                        <td>128 Filters &times; (3x3)</td>
+                                        <td>ReLU</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">BatchNormalization</td>
+                                        <td>(None, 7, 7, 128)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">MaxPooling2D</td>
+                                        <td>(None, 3, 3, 128)</td>
+                                        <td>(2x2) pool</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Flatten</td>
+                                        <td>(None, 1152)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Dense (FC Layer)</td>
+                                        <td>(None, 128)</td>
+                                        <td>128 Units</td>
+                                        <td>ReLU</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary font-weight-bold">Dropout (0.3)</td>
+                                        <td>(None, 128)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td class="text-success font-weight-bold">Dense (Classifier)</td>
+                                        <td class="text-success font-weight-bold">(None, 47)</td>
+                                        <td>47 Output Units</td>
+                                        <td class="text-success font-weight-bold">Softmax</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descriptive Panel -->
+                <div class="col-lg-5">
+                    <div class="glass-card bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <h4 class="mb-3" style="color: var(--primary);">Network Specifications</h4>
+                            <p class="text-muted small leading-relaxed">
+                                Our handwriting deep learning character classifier is implemented as a sequential Keras neural network. OpenCV splits coordinate blocks before feeding pixels box-by-box.
+                            </p>
+                            <hr class="border-secondary border-opacity-10 my-4">
+                            
+                            <div class="d-flex gap-3 mb-3">
+                                <div class="fs-4 text-accent"><i class="fas fa-layer-group"></i></div>
+                                <div>
+                                    <h6 style="color: var(--primary);">Batch Normalization</h6>
+                                    <p class="text-muted small">Optimizes parameters internally, accelerating gradient convergence rates across epochs.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex gap-3 mb-3">
+                                <div class="fs-4 text-accent"><i class="fas fa-filter"></i></div>
+                                <div>
+                                    <h6 style="color: var(--primary);">Conv2D Filter maps</h6>
+                                    <p class="text-muted small">Transitions from 32 input kernels to 128 deep layers, extracting edges and stroke connections sequentially.</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                <div class="fs-4 text-accent"><i class="fas fa-scissors"></i></div>
+                                <div>
+                                    <h6 style="color: var(--primary);">Page-Level OCR Engine</h6>
+                                    <p class="text-muted small">For notebook page extraction, we leverage a pre-trained **EasyOCR** engine containing ResNet and LSTM modules to scan sentences and line breaks.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

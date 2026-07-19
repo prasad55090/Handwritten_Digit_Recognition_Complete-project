@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Detail - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link active">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <h2 class="mb-4" style="color: var(--primary);">Analysis Report Details</h2>
+            
+            <div class="row g-4">
+                <!-- Left Panel: Input Preview and Bounding segments -->
+                <div class="col-lg-6">
+                    <div class="glass-card mb-4">
+                        <h4 class="mb-3" style="color: var(--primary);">Processed Handwriting Input</h4>
+                        <div class="text-center p-3 border border-secondary border-opacity-10 rounded-4 bg-light">
+                            <div id="detailImagePlaceholder" class="py-5 text-muted small">No active prediction session loaded. Draw or upload text first!</div>
+                            <img id="detailInputImage" src="" alt="Handwriting Input" class="img-fluid d-none rounded-3" style="max-height: 320px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h5 class="mb-3" style="color: var(--primary);"><i class="fas fa-crop-alt text-accent me-2"></i> Character Bounding Segments</h5>
+                        <div class="segmentation-wrapper" id="detailSegmentationContainer">
+                            <span class="text-muted small">No bounding segments logged in this session</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Text Extraction and Charts -->
+                <div class="col-lg-6">
+                    <div class="glass-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="mb-0" style="color: var(--primary);">Extracted Text Block</h4>
+                            <button class="btn btn-sm btn-outline-secondary" id="copyExtractedTextBtn"><i class="far fa-copy"></i> Copy Text</button>
+                        </div>
+                        
+                        <div class="text-ocr-results-area mb-4" id="detailPredText">-</div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="text-muted small uppercase" id="detailPredType">Type: -</span>
+                            <span class="text-success font-weight-bold" id="detailPredConfidence">Confidence: -</span>
+                        </div>
+
+                        <!-- Export buttons -->
+                        <div class="d-flex gap-2">
+                            <button class="btn-custom btn-custom-secondary flex-fill justify-content-center" id="downloadTxtBtn">
+                                <i class="fas fa-file-alt"></i> TXT
+                            </button>
+                            <button class="btn-custom btn-custom-accent flex-fill justify-content-center" id="downloadPdfBtn">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button class="btn-custom btn-custom-primary flex-fill justify-content-center" id="downloadDocxBtn">
+                                <i class="fas fa-file-word"></i> Word DOC
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h4 class="mb-3" style="color: var(--primary);">Confidence Probability Chart</h4>
+                        <div class="chart-container-wrapper">
+                            <canvas id="probabilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Alerts Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Grid -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link active">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 style="color: var(--primary);">Academic System Console</h2>
+                <span class="stat-badge"><i class="fas fa-database"></i> SQLite Database: Connected</span>
+            </div>
+
+            <!-- Dashboard Stats Row -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card text-center py-4">
+                        <span class="text-muted small uppercase">Total Queries Logged</span>
+                        <div class="stat-val" style="color: var(--accent);">{{ history|length }}</div>
+                        <span class="text-muted small">SQLite Audit Trails</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card text-center py-4">
+                        <span class="text-muted small uppercase">Model Val Accuracy</span>
+                        <div class="stat-val text-success">98.83%</div>
+                        <span class="text-muted small">Validated on Character sets</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card text-center py-4">
+                        <span class="text-muted small uppercase">CNN Training Loss</span>
+                        <div class="stat-val text-danger">0.0373</div>
+                        <span class="text-muted small">Categorical Crossentropy</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card text-center py-4">
+                        <span class="text-muted small uppercase">Active Classifiers</span>
+                        <div class="stat-val text-warning">Multi</div>
+                        <span class="text-muted small">MNIST, EMNIST & EasyOCR</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Grid Columns -->
+            <div class="row g-4">
+                <!-- Left Panel: Recognition Entry Routes -->
+                <div class="col-lg-8">
+                    <div class="glass-card">
+                        <h4 class="mb-4" style="color: var(--primary);">System Recognition Interfaces</h4>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="p-3 border border-secondary border-opacity-10 rounded-4 h-100 d-flex flex-column justify-content-between bg-light">
+                                    <div>
+                                        <h5 style="color: var(--primary);"><i class="fas fa-paint-brush text-accent me-2"></i> Draw Digit or Letter</h5>
+                                        <p class="text-muted small mt-2">Open the canvas draw board to sketch digits (0–9) and characters (A–Z, a–z). Bounding boundaries segment shapes dynamically.</p>
+                                    </div>
+                                    <a href="{{ url_for('draw') }}" class="btn-custom btn-custom-primary mt-3 w-100 justify-content-center">Go to Drawing Canvas</a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 border border-secondary border-opacity-10 rounded-4 h-100 d-flex flex-column justify-content-between bg-light">
+                                    <div>
+                                        <h5 style="color: var(--primary);"><i class="fas fa-file-upload text-accent me-2"></i> Scanned Notebook Pages</h5>
+                                        <p class="text-muted small mt-2">Upload handwritten notebook pages or sentences to extract paragraphs, preserving line layouts via EasyOCR.</p>
+                                    </div>
+                                    <a href="{{ url_for('upload') }}" class="btn-custom btn-custom-accent mt-3 w-100 justify-content-center">Go to File Uploader</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Recent logs list -->
+                <div class="col-lg-4">
+                    <div class="glass-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="mb-0" style="color: var(--primary);">Recent Audits</h4>
+                            <a href="{{ url_for('history_page') }}" class="btn btn-sm btn-outline-primary" style="border-radius:8px;">Logs Manager</a>
+                        </div>
+                        <div id="historyDashboardList">
+                            {% if history %}
+                                {% for item in history[:5] %}
+                                <div class="history-item">
+                                    <div>
+                                        <i class="fas fa-history text-accent me-2"></i>
+                                        <span>Extracted <strong>{{ item.text }}</strong></span>
+                                    </div>
+                                    <span class="badge bg-primary text-white">{{ "%.1f"|format(item.confidence * 100) }}%</span>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="text-center text-muted py-3">No predictions recorded</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Alert notifications -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

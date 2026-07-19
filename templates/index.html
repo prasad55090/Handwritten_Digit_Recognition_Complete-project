@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Text Recognition Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="main-wrapper container">
+        <div class="content-area">
+            <!-- Hero Header -->
+            <section class="hero-section text-center py-5 animate-fade-in">
+                <h1 class="hero-title">Handwritten Text Recognition <br>Using <span>Deep Learning</span></h1>
+                <p class="hero-subtitle mx-auto">
+                    A clean, professional academic web application demonstrating computer vision character segmentation, Keras neural network predictions (EMNIST/MNIST), and page-level handwriting text extraction. Developed as an MCA final-year capstone project.
+                </p>
+                <div class="mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn-custom btn-custom-primary btn-lg">
+                        <i class="fas fa-tachometer-alt"></i> Access Dashboard Console
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn-custom btn-custom-secondary btn-lg ms-3">
+                        <i class="fas fa-book-open"></i> Project Specifications
+                    </a>
+                </div>
+            </section>
+
+            <!-- Features Cards Grid -->
+            <section class="row g-4 mt-4 py-5 animate-slide-up">
+                <h3 class="text-center mb-5 font-weight-bold" style="color: var(--primary);">System Modalities</h3>
+                <div class="col-md-4">
+                    <div class="glass-card text-center">
+                        <div class="fs-1 text-accent mb-3"><i class="fas fa-hand-pointer"></i></div>
+                        <h4 class="mb-3" style="color: var(--primary);">Digits & Alphabets</h4>
+                        <p class="text-muted small">Sketch or upload isolated characters. The Keras model predicts digits (0–9) and alphabets (A–Z, a–z) with instant probability charts.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card text-center">
+                        <div class="fs-1 text-accent mb-3"><i class="fas fa-paragraph"></i></div>
+                        <h4 class="mb-3" style="color: var(--primary);">Word & Line Segmenter</h4>
+                        <p class="text-muted small">Write complete words. The OpenCV preprocessing segmenter detects letter boundaries, runs classifications, and joins characters.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card text-center">
+                        <div class="fs-1 text-accent mb-3"><i class="fas fa-file-alt"></i></div>
+                        <h4 class="mb-3" style="color: var(--primary);">Full Page OCR Scan</h4>
+                        <p class="text-muted small">Upload scans of notebooks or text blocks. The advanced neural OCR engine extracts sentences, preserving lines and paragraphs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Academic Technology Stack Overview -->
+            <section class="mt-5 py-5 animate-slide-up">
+                <div class="glass-card text-center">
+                    <h3 class="mb-4" style="color: var(--primary);">System Core Technology Stack</h3>
+                    <div class="row g-4 justify-content-center text-muted">
+                        <div class="col-6 col-md-3">
+                            <i class="fab fa-python fs-2 text-accent mb-2"></i>
+                            <h6 class="text-dark">Python & Flask</h6>
+                            <p class="small">Backend routes & API servers</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <i class="fas fa-network-wired fs-2 text-accent mb-2"></i>
+                            <h6 class="text-dark">Keras & PyTorch</h6>
+                            <p class="small">CNN & EasyOCR classifiers</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <i class="fas fa-eye fs-2 text-accent mb-2"></i>
+                            <h6 class="text-dark">OpenCV Filters</h6>
+                            <p class="small">Bounding box contours segmenter</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <i class="fas fa-database fs-2 text-accent mb-2"></i>
+                            <h6 class="text-dark">SQLite Engine</h6>
+                            <p class="small">Prediction records storage auditing</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Toast Alerts Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

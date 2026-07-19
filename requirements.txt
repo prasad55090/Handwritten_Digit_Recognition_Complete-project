@@ -1,0 +1,17 @@
+tensorflow
+numpy
+matplotlib
+scikit-learn
+seaborn
+pillow
+flask
+flask-cors
+transformers
+torch
+torchvision
+datasets
+jiwer
+accelerate
+evaluate
+albumentations
+tensorboard

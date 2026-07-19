@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Scan - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link active">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <h2 class="mb-4" style="color: var(--primary);">Document Scan Upload Bay</h2>
+            
+            <div class="row g-4">
+                <!-- Left Panel: Drag Zone -->
+                <div class="col-lg-6">
+                    <div class="glass-card text-center d-flex flex-column justify-content-between">
+                        <div>
+                            <h4 class="mb-3" style="color: var(--primary);">Upload Handwriting File</h4>
+                            <p class="text-muted small mb-4">Upload scanned handwritten notebook pages or sentences. The system routes the image to Keras or the EasyOCR engine.</p>
+                            
+                            <div class="upload-drag-zone my-4" id="uploadDragZone">
+                                <input type="file" id="imageFileInput" accept="image/*" class="d-none">
+                                <div id="uploadPlaceholder">
+                                    <i class="fas fa-file-upload upload-icon"></i>
+                                    <h5>Drag & Drop Handwriting Image here</h5>
+                                    <p class="text-muted small">or click to browse local files</p>
+                                </div>
+                                <img id="uploadPreview" src="" alt="Scan Preview" class="img-fluid d-none rounded-4" style="max-height: 250px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            </div>
+                        </div>
+
+                        <!-- Reset button -->
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button class="btn-custom btn-custom-secondary w-100 justify-content-center" id="clearUploadBtn">
+                                <i class="fas fa-undo"></i> Reset Scan Area
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Results display -->
+                <div class="col-lg-6">
+                    <div class="row g-4">
+                        <!-- HTR Pipeline Status & Metadata -->
+                        <div class="col-12">
+                            <div class="glass-card">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="m-0" style="color: var(--primary);"><i class="fas fa-tasks text-accent me-2"></i> HTR Pipeline Status</h5>
+                                    <span class="badge bg-secondary px-3 py-2 fs-6" id="processingStatus">Status: Idle</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3 border mb-3">
+                                    <div id="statusIndicatorSpinner" class="spinner-border text-primary d-none" role="status" style="width: 2rem; height: 2rem;"></div>
+                                    <div id="statusIndicatorIcon" class="fas fa-info-circle text-muted" style="font-size: 2rem;"></div>
+                                    <div>
+                                        <h6 class="m-0 font-weight-bold" id="statusText">Ready to Process</h6>
+                                        <p class="text-muted small m-0" id="statusMessage">Upload or drag/drop a handwritten document image on the left to start.</p>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-sm-6">
+                                        <div class="p-2 border rounded text-center bg-light">
+                                            <span class="text-muted small d-block">CLASSIFIED TYPE</span>
+                                            <strong id="predInputType" class="text-primary">-</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="p-2 border rounded text-center bg-light">
+                                            <span class="text-muted small d-block">PROCESSING TIME</span>
+                                            <strong id="predTime" class="text-primary">-</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extracted Text Results & Export Options -->
+                        <div class="col-12">
+                            <div class="glass-card">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="m-0" style="color: var(--primary);"><i class="fas fa-file-signature text-accent me-2"></i> Extracted Text Results</h5>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-primary" id="copyTextBtnDirect" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="downloadDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-download"></i> Export
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="downloadDropdown">
+                                                <li><a class="dropdown-item" href="#" id="downloadTxtBtnDirect"><i class="fas fa-file-alt me-2 text-primary"></i>Plain Text (.txt)</a></li>
+                                                <li><a class="dropdown-item" href="#" id="downloadDocBtnDirect"><i class="fas fa-file-word me-2 text-blue"></i>Word Document (.doc)</a></li>
+                                                <li><a class="dropdown-item" href="#" id="downloadPdfBtnDirect"><i class="fas fa-file-pdf me-2 text-danger"></i>PDF Report (.pdf)</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center py-2 bg-light rounded border mb-3">
+                                    <span class="text-muted small d-block mb-1">PROBABILITY CONFIDENCE</span>
+                                    <h4 class="m-0 font-weight-bold text-success" id="predConfidence">Confidence: -</h4>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <textarea class="form-control text-ocr-results-area" id="extractedTextArea" rows="5" placeholder="Recognized text will be displayed here in a readable, copyable format..." style="resize: vertical; font-family: 'Courier New', Courier, monospace;"></textarea>
+                                </div>
+                                
+                                <!-- Hidden for script compatibility -->
+                                <div class="prediction-large-display empty d-none" id="predText">-</div>
+                            </div>
+                        </div>
+
+                        <!-- Character segmentation preview log -->
+                        <div class="col-12">
+                            <div class="glass-card">
+                                <h5 class="mb-3" style="color: var(--primary);"><i class="fas fa-crop-alt text-accent me-2"></i> Character Bounding Segments</h5>
+                                <div class="segmentation-wrapper" id="segmentationPreviewContainer">
+                                    <span class="text-muted small">Upload an image first</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="glass-card">
+                                <h4 class="mb-3" style="color: var(--primary);">Confidence Probability Chart</h4>
+                                <div class="chart-container-wrapper">
+                                    <canvas id="probabilityChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-custom"></div>
+        <h5 class="text-dark">Running image thresholding and neural OCR extraction...</h5>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

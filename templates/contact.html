@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <main class="main-wrapper container py-5 animate-fade-in">
+        <div class="content-area">
+            <h2 class="mb-4 text-center" style="color: var(--primary);">Get in Touch</h2>
+            <p class="text-muted text-center mb-5 mx-auto" style="max-width: 600px;">Submit questions about neural networks weights, EMNIST/MNIST classifications, or project installations below.</p>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Form -->
+                <div class="col-lg-6">
+                    <div class="glass-card bg-white">
+                        <h4 class="mb-4" style="color: var(--primary);"><i class="far fa-envelope text-accent me-2"></i> Feedback Submission</h4>
+                        
+                        {% if success_message %}
+                        <div class="alert alert-success border-0 bg-success bg-opacity-10 text-success" role="alert" style="border-radius: 12px;">
+                            <i class="fas fa-check-circle me-2"></i> {{ success_message }}
+                        </div>
+                        {% endif %}
+
+                        <form action="{{ url_for('contact') }}" method="POST" class="d-flex flex-column gap-3">
+                            <div>
+                                <label for="contactName" class="form-label text-muted small">Full Name</label>
+                                <input type="text" class="form-control text-dark border-secondary border-opacity-10 rounded-3 py-2 px-3" id="contactName" name="name" placeholder="John Doe" required style="transition: all 0.2s;">
+                            </div>
+                            <div>
+                                <label for="contactEmail" class="form-label text-muted small">Email Address</label>
+                                <input type="email" class="form-control text-dark border-secondary border-opacity-10 rounded-3 py-2 px-3" id="contactEmail" name="email" placeholder="john.doe@example.com" required style="transition: all 0.2s;">
+                            </div>
+                            <div>
+                                <label for="contactSubject" class="form-label text-muted small">Subject</label>
+                                <input type="text" class="form-control text-dark border-secondary border-opacity-10 rounded-3 py-2 px-3" id="contactSubject" name="subject" placeholder="Project Setup Query" required style="transition: all 0.2s;">
+                            </div>
+                            <div>
+                                <label for="contactMessage" class="form-label text-muted small">Message</label>
+                                <textarea class="form-control text-dark border-secondary border-opacity-10 rounded-3 py-2 px-3" id="contactMessage" name="message" rows="4" placeholder="Write your feedback details here..." required style="transition: all 0.2s;"></textarea>
+                            </div>
+                            <button type="submit" class="btn-custom btn-custom-primary mt-3 justify-content-center">
+                                <i class="fas fa-paper-plane"></i> Submit Feedback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="col-lg-4 d-flex flex-column gap-4">
+                    <div class="glass-card bg-white">
+                        <h5 class="mb-3" style="color: var(--primary);"><i class="fas fa-university text-accent me-2"></i> Department Info</h5>
+                        <p class="text-muted small mb-0">
+                            Department of Computer Applications<br>
+                            Faculty of Science & Technology<br>
+                            University Campus, Research Block 4
+                        </p>
+                    </div>
+
+                    <div class="glass-card bg-white">
+                        <h5 class="mb-3" style="color: var(--primary);"><i class="fas fa-headset text-accent me-2"></i> Technical Inquiry</h5>
+                        <p class="text-muted small mb-1">
+                            For source code files, configurations, or dataset licensing queries:
+                        </p>
+                        <a href="mailto:mca.project.support@university.edu" class="text-accent text-decoration-none small">mca.project.support@university.edu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

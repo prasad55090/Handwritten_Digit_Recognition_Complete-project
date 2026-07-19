@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <h2 class="mb-4" style="color: var(--primary);">System Help & FAQs</h2>
+            <p class="text-muted mb-5">User guide and troubleshooting FAQs answering core operations on this platform.</p>
+
+            <div class="row g-4">
+                <!-- FAQs -->
+                <div class="col-lg-8">
+                    <div class="glass-card bg-white text-dark">
+                        <h4 class="mb-4 text-dark"><i class="fas fa-question-circle text-accent me-2"></i> Frequently Asked Questions</h4>
+                        
+                        <div class="accordion accordion-flush" id="faqAccordion">
+                            
+                            <!-- FAQ 1 -->
+                            <div class="accordion-item bg-transparent text-muted border-bottom border-secondary border-opacity-10 py-3">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button bg-transparent text-dark border-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="box-shadow:none;">
+                                        How does automatic model selection operate?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body small leading-relaxed text-muted">
+                                        When you draw on the canvas or upload an image, the backend runs OpenCV contour counts. If it detects a single contour that is square or small, it routes it to the Keras MNIST digit or EMNIST character model. If it detects multiple spaced-out contours, it runs character segmentation. If the image has complex text layouts or lines, it calls the PyTorch-based EasyOCR page recognition module.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ 2 -->
+                            <div class="accordion-item bg-transparent text-muted border-bottom border-secondary border-opacity-10 py-3">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button bg-transparent text-dark border-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="box-shadow:none;">
+                                        Where are classification outputs archived?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body small leading-relaxed text-muted">
+                                        All prediction logs are written to local SQLite database schemas (`history.db`) automatically. The History page queries this database to let you audit and delete logged results.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ 3 -->
+                            <div class="accordion-item bg-transparent text-muted border-bottom border-secondary border-opacity-10 py-3">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button bg-transparent text-dark border-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="box-shadow:none;">
+                                        How do I export prediction reports?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body small leading-relaxed text-muted">
+                                        In the **Prediction Detail** page, you can download recognition reports as a plain `.txt` file, a formatted `.pdf` document, or a Microsoft Word `.doc` file.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ 4 -->
+                            <div class="accordion-item bg-transparent text-muted py-3">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button bg-transparent text-dark border-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="box-shadow:none;">
+                                        Can I customize line segmentation parameters?
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body small leading-relaxed text-muted">
+                                        Yes. Open the **Settings** panel to adjust the image binarization threshold boundary or override automatic model routing manually.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting Tip Panel -->
+                <div class="col-lg-4">
+                    <div class="glass-card bg-white text-muted">
+                        <h5 class="mb-3 text-dark"><i class="fas fa-lightbulb text-accent me-2"></i> Quick Tips</h5>
+                        <ul class="text-muted small ps-3 d-flex flex-column gap-2 mb-0">
+                            <li><strong>Poor Accuracy:</strong> Draw characters of uniform height and space them slightly for clean OpenCV contours.</li>
+                            <li><strong>OCR Page Layouts:</strong> Ensure images are cropped closely to the writing with uniform lighting.</li>
+                            <li><strong>Word Document Downloads:</strong> Word files use standard HTML Word-MIME templates to run without client-side dependencies.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - HTR Console</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Academic Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand-custom" href="{{ url_for('index') }}">
+                <i class="fas fa-university text-blue"></i>
+                <span>HTR</span>AcademicPortal
+            </a>
+            <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('help_page') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ url_for('settings_page') }}"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="theme-toggle-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('draw') }}" class="sidebar-link">
+                <i class="fas fa-paint-brush"></i> Draw Input
+            </a>
+            <a href="{{ url_for('upload') }}" class="sidebar-link">
+                <i class="fas fa-upload"></i> Upload Scan
+            </a>
+            <a href="{{ url_for('prediction') }}" class="sidebar-link">
+                <i class="fas fa-file-alt"></i> Prediction Detail
+            </a>
+            <a href="{{ url_for('history_page') }}" class="sidebar-link">
+                <i class="fas fa-history"></i> SQLite History
+            </a>
+            <a href="{{ url_for('results') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> Results & Graphs
+            </a>
+            <a href="{{ url_for('model_info') }}" class="sidebar-link">
+                <i class="fas fa-network-wired"></i> Model Info
+            </a>
+            <a href="{{ url_for('dataset_info') }}" class="sidebar-link">
+                <i class="fas fa-database"></i> Dataset Info
+            </a>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area animate-fade-in">
+            <h2 class="mb-4" style="color: var(--primary);">System Configuration Settings</h2>
+            
+            <div class="row g-4">
+                <!-- System Config Card -->
+                <div class="col-lg-6">
+                    <div class="glass-card mb-4">
+                        <h4 class="mb-4" style="color: var(--primary);"><i class="fas fa-sliders-h text-accent me-2"></i> Classifier Parameters</h4>
+                        
+                        <div class="mb-4">
+                            <label for="settingModelSelect" class="form-label text-muted small">Classifier Model Preference</label>
+                            <select class="form-select form-select-custom w-100" id="settingModelSelect">
+                                <option value="auto">Automatic Layout Selection (Recommended)</option>
+                                <option value="digits">MNIST CNN Digits Model Only</option>
+                                <option value="letters">EMNIST CNN Characters Model Only</option>
+                                <option value="ocr">EasyOCR Page Engine Only</option>
+                            </select>
+                            <span class="text-muted small d-block mt-2">Automatic selection detects character dimensions and threshold complexity to route predictions.</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="settingThreshRange" class="form-label d-flex justify-content-between text-muted small">
+                                <span>Binary Binarization Threshold Boundary</span>
+                                <strong id="settingThreshVal">127</strong>
+                            </label>
+                            <input type="range" class="form-range w-100" id="settingThreshRange" min="50" max="200" value="127">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation and database logs deletion -->
+                <div class="col-lg-6">
+                    <div class="glass-card mb-4">
+                        <h4 class="mb-4" style="color: var(--primary);"><i class="fas fa-desktop text-accent me-2"></i> Interface Preferences</h4>
+                        
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="settingAutoRedirect">
+                            <label class="form-check-label text-muted small ms-2" for="settingAutoRedirect">Automatic redirection to detailed Prediction Analysis page</label>
+                        </div>
+                        
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" role="switch" id="settingAutoPredict" checked>
+                            <label class="form-check-label text-muted small ms-2" for="settingAutoPredict">Trigger automatic predictions on canvas brush pointer release</label>
+                        </div>
+
+                        <hr class="border-secondary border-opacity-10 my-4">
+
+                        <h5 class="mb-3 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Database Maintenance</h5>
+                        <p class="text-muted small">Erase SQLite logs tables. Prediction records cannot be recovered after execution.</p>
+                        <form action="{{ url_for('clear_history_logs') }}" method="POST">
+                            <button type="submit" class="btn-custom btn-custom-danger w-100 justify-content-center mt-2">
+                                <i class="fas fa-trash-alt"></i> Clear SQLite Prediction History
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast alerts -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2026 Handwritten Text Recognition System. MCA Capstone Portfolio.</p>
+            <p class="small text-muted mb-0">Built with TensorFlow, PyTorch, OpenCV, SQLite, and Flask</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

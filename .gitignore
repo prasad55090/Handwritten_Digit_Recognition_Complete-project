@@ -1,0 +1,27 @@
+# Python Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Datasets (Extremely large binary archives)
+data/
+BenthamDatasetR0-GT.tbz
+
+# Model weights & large binaries (Hugging Face / Keras)
+fine_tuned_trocr/
+model.h5
+text_model.h5
+history.db
+
+# OS cache
+.DS_Store
+
+# OpenCV Debug Output
+debug_inverted_crop.png
+debug_line_crop.png
